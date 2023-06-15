@@ -49,6 +49,24 @@ No* adicionar(Arvore* arvore, int valor) {
     }
 }
 
+void removeNo(Arvore* arvore, No* no) {
+    if (no->esquerda != NULL)
+        removeNo(arvore, no->esquerda);
+
+    if (no->direita != NULL)
+        removeNo(arvore, no->direita);
+
+    if (no->pai == NULL) {
+        arvore->raiz = NULL;
+    } else {
+        if (no->pai->esquerda == no)
+            no->pai->esquerda = NULL;
+        else
+            no->pai->direita = NULL;
+    }
+    free(no);
+}
+
 No* localizar(No* no, int valor) {
     if (no->valor == valor) {
         return no;

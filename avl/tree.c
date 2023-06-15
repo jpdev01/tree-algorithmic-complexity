@@ -22,21 +22,3 @@ Arvore* cria() {
 int vazia(Arvore* arvore) {
     return arvore->raiz == NULL;
 }
-
-void removeNo(Arvore* arvore, No* no) {
-    if (no->esquerda != NULL)
-        removeNo(arvore, no->esquerda);
-
-    if (no->direita != NULL)
-        removeNo(arvore, no->direita);
-
-    if (no->pai == NULL) {
-        arvore->raiz = NULL;
-    } else {
-        if (no->pai->esquerda == no)
-            no->pai->esquerda = NULL;
-        else
-            no->pai->direita = NULL;
-    }
-    free(no);
-}
