@@ -1,6 +1,6 @@
 #include <stdio.h>
+#include "avl/task.c"
 
-int main() {
-    printf("Hello, World!\n");
-    return 0;
+void main() {
+    task();
 }
