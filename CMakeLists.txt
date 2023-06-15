@@ -3,4 +3,4 @@ project(tree_algorithmic_complexity C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(tree_algorithmic_complexity main.c)
+add_executable(tree_algorithmic_complexity mainAvl.c)
