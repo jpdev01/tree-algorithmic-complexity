@@ -1,5 +1,6 @@
-#include "avl/task.c"
+#include "avl/avl.c"
 
 void main() {
-    task();
+    extern long int AVLcontador;
+    executeAvl();
 }
