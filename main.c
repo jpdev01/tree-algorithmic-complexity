@@ -27,9 +27,7 @@ void popula(int vetor[], int tamanho) {
 }
 
 int main() {
-    extern long int RNcontador;
-    extern int bContador;
-    extern long int AVLcontador;
+    extern long int avlCount;
 
     int v[1000];
     srand(time(NULL));
@@ -37,7 +35,7 @@ int main() {
     FILE *arquivomedio;
     FILE *arquivopior;
 
-    arquivomedio = fopen("/home/asaas/CLionProjects/tree-algorithmic-complexity/worstCase.csv", "w");
+    arquivomedio = fopen("/home/asaas/CLionProjects/tree-algorithmic-complexity/result/worstCase.csv", "w");
     if (arquivomedio == NULL) {
         printf("Erro ao abrir arquivo Caso Medio\n");
     }
@@ -47,10 +45,8 @@ int main() {
         printf("Erro ao abrir arquivo PiorCaso\n");
     }
 
-
     fprintf(arquivomedio, "%s", "n;RN;AVL;B-1;B-5;B-10\n");
     fprintf(arquivopior, "%s", "n;RN;AVL;B-1;B-5;B-10\n");
-
 
     //Criação Loop 1000 registros
     // 1000
@@ -65,9 +61,9 @@ int main() {
             Arvore *arvoreAVL = cria();
 
             for (int i = 0; i < j; i++) {
-                AVLcontador = 0;
+                avlCount = 0;
                 adicionar(arvoreAVL, v[i]);
-                media_avl += AVLcontador;
+                media_avl += avlCount;
             }
             free(arvoreAVL);
         }
@@ -79,14 +75,13 @@ int main() {
         fprintf(arquivomedio, "%ld", media_b10 / 10);
         fprintf(arquivomedio, "\n");
 
-
         //Arvore com Pior Caso
         Arvore *arvoreAVLPior = cria();
         long int bContador1 = 0, bContador5 = 0, bContador10 = 0, contadorRN = 0, avlContador = 0;
         for (int i = 1; i <= j; i++) {
-            AVLcontador = 0;
+            avlCount = 0;
             adicionar(arvoreAVLPior, i);
-            avlContador += AVLcontador;
+            avlContador += avlCount;
         }
         free(arvoreAVLPior);
 

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-long int AVLcontador = 0;
+long int avlCount = 0;
 
 typedef struct no {
     struct no* pai;
@@ -40,7 +40,7 @@ int altura(No *no) {
 }
 
 int fb(No *no) {
-    AVLcontador++;
+    avlCount++;
     int esquerda = 0, direita = 0;
 
     if (no->esquerda != NULL) {
@@ -55,7 +55,7 @@ int fb(No *no) {
 }
 
 No *rse(Arvore *arvore, No *no) {
-    AVLcontador++;
+    avlCount++;
     No *pai = no->pai;
     No *direita = no->direita;
 
@@ -83,7 +83,7 @@ No *rse(Arvore *arvore, No *no) {
 }
 
 No *rsd(Arvore *arvore, No *no) {
-    AVLcontador++;
+    avlCount++;
     No *pai = no->pai;
     No *esquerda = no->esquerda;
 
@@ -158,7 +158,7 @@ No* criarNo(int valor) {
 }
 
 No* adicionarNo(No* no, int valor) {
-    AVLcontador++;
+    avlCount++;
     if (valor > no->valor) {
         if (no->direita == NULL) {
             printf("Adicionando %d\n",valor);
@@ -185,7 +185,7 @@ No* adicionarNo(No* no, int valor) {
 }
 
 No* adicionar(Arvore* arvore, int valor) {
-    AVLcontador++;
+    avlCount++;
     if (arvore->raiz == NULL) {
         printf("Adicionando %d\n",valor);
         No* novo = criarNo(valor);
@@ -249,17 +249,3 @@ Arvore* build() {
 
     return arvore;
 }
-
-//void executeAvl() {
-//    Arvore* arvore = build();
-//
-//    printf("---Q1----\n");
-//    printf("Fator de balanceamento: %i", fb(arvore->raiz));
-//
-//    printf("\n---Q2----\n");
-//    printf("Remover nó 6:\n");
-//    removeNo(arvore, arvore->raiz->direita->esquerda);
-//    printf("Fator de balanceamento removendo o nó 6: %i", fb(arvore->raiz));
-//    removeNo(arvore, arvore->raiz->direita);
-//    printf("\nFator de balanceamento removendo o nó 8: %i", fb(arvore->raiz));
-//}
