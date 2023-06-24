@@ -35,7 +35,7 @@ int main() {
     FILE *arquivomedio;
     FILE *arquivopior;
 
-    arquivomedio = fopen("/home/asaas/CLionProjects/tree-algorithmic-complexity/result/worstCase.csv", "w");
+    arquivomedio = fopen("/home/asaas/CLionProjects/tree-algorithmic-complexity/output/worstCase.csv", "w");
     if (arquivomedio == NULL) {
         printf("Erro ao abrir arquivo Caso Medio\n");
     }
