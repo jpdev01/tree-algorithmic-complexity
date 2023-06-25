@@ -20,35 +20,35 @@ typedef struct arvore {
 
 long int RNcontador = 0; 
 
-No* criarNo(Arvore*, No*, int);
-void balancear(Arvore*, No*);
-void rotacionarEsquerda(Arvore*, No*);
-void rotacionarDireita(Arvore*, No*);
+No* rb_criarNo(Arvore* arvore, No* pai, int valor);
+void rb_balancear(Arvore* arvore, No* no);
+void rb_rotacionarEsquerda(Arvore* arvore, No* no);
+void rb_rotacionarDireita(Arvore* arvore, No* no);
 
 Arvore* criar();
-int vazia(Arvore*);
-No* adicionar(Arvore*, int);
-No* localizar(Arvore* arvore, int valor);
+int rb_vazia(Arvore* arvore);
+No* rb_adicionar(Arvore* arvore, int valor);
+No* rb_localizar(Arvore* arvore, int valor);
 
 Arvore* criar() {
     Arvore *arvore = malloc(sizeof(Arvore));
     arvore->nulo = NULL;
     arvore->raiz = NULL;
 
-    arvore->nulo = criarNo(arvore, NULL, 0);
+    arvore->nulo = rb_criarNo(arvore, NULL, 0);
     arvore->nulo->cor = Preto;
 
     return arvore;
 }
 
-int vazia(Arvore* arvore) {
+int rb_vazia(Arvore* arvore) {
     return arvore->raiz == NULL;
 }
 
-No* criarNo(Arvore* arvore, No* pai, int valor) {
+No* rb_criarNo(Arvore* arvore, No* pai, int valor) {
     No* no = malloc(sizeof(No));
 
-    no->pai = pai;    
+    no->pai = pai;
     no->valor = valor;
     no->direita = arvore->nulo;
     no->esquerda = arvore->nulo;
@@ -56,46 +56,46 @@ No* criarNo(Arvore* arvore, No* pai, int valor) {
     return no;
 }
 
-No* adicionarNo(Arvore* arvore, No* no, int valor) {
+No* rb_adicionarNo(Arvore* arvore, No* no, int valor) {
     RNcontador++;
     if (valor > no->valor) {
         if (no->direita == arvore->nulo) {
-            no->direita = criarNo(arvore, no, valor);     
+            no->direita = rb_criarNo(arvore, no, valor);
             no->direita->cor = Vermelho;       
         		
             return no->direita;
         } else {
-            return adicionarNo(arvore, no->direita, valor);
+            return rb_adicionarNo(arvore, no->direita, valor);
         }
     } else {
         if (no->esquerda == arvore->nulo) {
-            no->esquerda = criarNo(arvore, no, valor);
+            no->esquerda = rb_criarNo(arvore, no, valor);
             no->esquerda->cor = Vermelho;
             
             return no->esquerda;
         } else {
-            return adicionarNo(arvore, no->esquerda, valor);
+            return rb_adicionarNo(arvore, no->esquerda, valor);
         }
     }
 }
 
-No* adicionar(Arvore* arvore, int valor) {
+No* rb_adicionar(Arvore* arvore, int valor) {
     RNcontador++;
-    if (vazia(arvore)) {
-        arvore->raiz = criarNo(arvore, arvore->nulo, valor);
+    if (rb_vazia(arvore)) {
+        arvore->raiz = rb_criarNo(arvore, arvore->nulo, valor);
         arvore->raiz->cor = Preto;
         	
         return arvore->raiz;
     } else {
-        No* no = adicionarNo(arvore, arvore->raiz, valor);
-        balancear(arvore, no);
+        No* no = rb_adicionarNo(arvore, arvore->raiz, valor);
+        rb_balancear(arvore, no);
         
         return no;
     }
 }
 
-No* localizar(Arvore* arvore, int valor) {
-    if (!vazia(arvore)) {
+No* rb_localizar(Arvore* arvore, int valor) {
+    if (!rb_vazia(arvore)) {
         No* no = arvore->raiz;
 
         while (no != arvore->nulo) {
@@ -140,7 +140,7 @@ void visitar(int valor){
     printf("%d ", valor);
 }
 
-void balancear(Arvore* arvore, No* no) {
+void rb_balancear(Arvore* arvore, No* no) {
     while (no->pai->cor == Vermelho) {
         RNcontador++;
         if (no->pai == no->pai->pai->esquerda) {
@@ -157,12 +157,12 @@ void balancear(Arvore* arvore, No* no) {
                 if (no == no->pai->direita) {
                     RNcontador++;
                     no = no->pai; //Caso 2
-                    rotacionarEsquerda(arvore, no); //Caso 2
+                    rb_rotacionarEsquerda(arvore, no); //Caso 2
                 } else {
                     RNcontador++;
                     no->pai->cor = Preto; 
                     no->pai->pai->cor = Vermelho; //Caso 3
-                    rotacionarDireita(arvore, no->pai->pai); //Caso 3
+                    rb_rotacionarDireita(arvore, no->pai->pai); //Caso 3
                 }
             }
         } else {
@@ -179,12 +179,12 @@ void balancear(Arvore* arvore, No* no) {
                 if (no == no->pai->esquerda) {
                     RNcontador++;
                     no = no->pai; //Caso 2
-                    rotacionarDireita(arvore, no); //Caso 2
+                    rb_rotacionarDireita(arvore, no); //Caso 2
                 } else {
                     RNcontador++;
                     no->pai->cor = Preto; 
                     no->pai->pai->cor = Vermelho; //Caso 3
-                    rotacionarEsquerda(arvore, no->pai->pai); //Caso 3
+                    rb_rotacionarEsquerda(arvore, no->pai->pai); //Caso 3
                 }
             }
         }
@@ -192,7 +192,7 @@ void balancear(Arvore* arvore, No* no) {
     arvore->raiz->cor = Preto; //Conserta possível quebra regra 2
 }
 
-void rotacionarEsquerda(Arvore* arvore, No* no) {
+void rb_rotacionarEsquerda(Arvore* arvore, No* no) {
     RNcontador++;
     No* direita = no->direita;
     no->direita = direita->esquerda; 
@@ -215,7 +215,7 @@ void rotacionarEsquerda(Arvore* arvore, No* no) {
     no->pai = direita;
 }
 
-void rotacionarDireita(Arvore* arvore, No* no) {
+void rb_rotacionarDireita(Arvore* arvore, No* no) {
     RNcontador++;   
     No* esquerda = no->esquerda;
     no->esquerda = esquerda->direita;
