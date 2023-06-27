@@ -127,19 +127,19 @@ void balanceamento(Arvore *a, No *no) {
         if (fator > 1) { //arvore mais profunda a esquerda
             //rotacao a direita
             if (fb(no->esquerda) > 0) {
-                printf("RSD(%d)\n", no->valor);
+                //printf("RSD(%d)\n", no->valor);
                 rsd(a, no);
             } else {
-                printf("RDD(%d)\n", no->valor);
+                //printf("RDD(%d)\n", no->valor);
                 rdd(a, no);
             }
         } else if (fator < -1) {
             //rotacao a esquerda
             if (fb(no->direita) < 0) {
-                printf("RSE(%d)\n", no->valor);
+                //printf("RSE(%d)\n", no->valor);
                 rse(a, no);
             } else {
-                printf("RDE(%d)\n", no->valor);
+                //printf("RDE(%d)\n", no->valor);
                 rde(a, no);
             }
         }
@@ -161,7 +161,7 @@ No* adicionarNo(No* no, int valor) {
     avlCount++;
     if (valor > no->valor) {
         if (no->direita == NULL) {
-            printf("Adicionando %d\n",valor);
+            //printf("Adicionando %d\n",valor);
             No* novo = criarNo(valor);
             novo->pai = no;
             no->direita = novo;
@@ -172,7 +172,7 @@ No* adicionarNo(No* no, int valor) {
         }
     } else {
         if (no->esquerda == NULL) {
-            printf("Adicionando %d\n",valor);
+            //printf("Adicionando %d\n",valor);
             No* novo = criarNo(valor);
             novo->pai = no;
             no->esquerda = novo;
@@ -187,7 +187,7 @@ No* adicionarNo(No* no, int valor) {
 No* adicionar(Arvore* arvore, int valor) {
     avlCount++;
     if (arvore->raiz == NULL) {
-        printf("Adicionando %d\n",valor);
+        //printf("Adicionando %d\n",valor);
         No* novo = criarNo(valor);
         arvore->raiz = novo;
 
