@@ -3,259 +3,248 @@
 #include <time.h>
 #include <stdbool.h>
 
-typedef struct no {
+long int bCount = 0;
+
+typedef struct noB {
     int total;
     int* chaves;
-    struct no** filhos;
-    struct no* pai;
-} No;
+    struct noB** filhos;
+    struct noB* pai;
+} NoB;
 
 typedef struct arvoreB {
-    No* raiz;
+    NoB* raiz;
     int ordem;
 } ArvoreB;
 
-ArvoreB* criaArvore(int);
-No* criaNo(ArvoreB*);
-void percorreArvore(No*);
-int pesquisaBinaria(No*, int);
-int localizaChave(ArvoreB*, int);
-No* localizaNo(ArvoreB*, int);
-void adicionaChaveNo(No*, No*, int);
-int transbordo(ArvoreB*, No*);
-No* divideNo(ArvoreB*, No*);
-void adicionaChaveRecursivo(ArvoreB*, No*, No*, int);
-void adicionaChave(ArvoreB*, int);
+ArvoreB* criaArvoreB(int);
+NoB* criaNoB(ArvoreB*);
+void percorreArvoreB(NoB*);
+int pesquisaBinariaB(NoB*, int);
+int localizaChaveB(ArvoreB*, int);
+NoB* localizaNoB(ArvoreB*, int);
+void adicionaChaveNoB(NoB*, NoB*, int);
+int transbordoB(ArvoreB*, NoB*);
+NoB* divideNoB(ArvoreB*, NoB*);
+void adicionaChaveRecursivoB(ArvoreB*, NoB*, NoB*, int);
+void adicionaChaveB(ArvoreB*, int);
+void removeChaveB(ArvoreB* arvore, int chave);
+void removeChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave);
+void removerChaveNoB(NoB* noB, int indice);
+void redistribuirChavesB(NoB* pai, NoB* filhoEsq, NoB* filhoDir, int indiceFilhoEsq);
 
-// Implementação de remoção
-
-void removeChave(ArvoreB* arvore, int chave);
-void removeChaveRecursivo(ArvoreB* arvore, No* no, int chave);
-void removerChaveNo(No* no, int indice);
-void redistribuirChaves(No* pai, No* filhoEsq, No* filhoDir, int indiceFilhoEsq);
-
-ArvoreB* criaArvore(int ordem) {
+ArvoreB* criaArvoreB(int ordem) {
     ArvoreB* a = malloc(sizeof(ArvoreB));
     a->ordem = ordem;
-    a->raiz = criaNo(a);
+    a->raiz = criaNoB(a);
 
     return a;
 }
 
-int contador = 0;
 
-No* criaNo(ArvoreB* arvore) {
+NoB* criaNoB(ArvoreB* arvore) {
     int max = arvore->ordem * 2;
-    No* no = malloc(sizeof(No));
+    NoB* noB = malloc(sizeof(NoB));
 
-    no->pai = NULL;
+    noB->pai = NULL;
 
-    no->chaves = malloc(sizeof(int) * (max + 1));
-    no->filhos = malloc(sizeof(No) * (max + 2));
-    no->total = 0;
+    noB->chaves = malloc(sizeof(int) * (max + 1));
+    noB->filhos = malloc(sizeof(NoB) * (max + 2));
+    noB->total = 0;
 
     for (int i = 0; i < max + 2; i++)
-        no->filhos[i] = NULL;
+        noB->filhos[i] = NULL;
 
-    return no;
+    return noB;
 }
 
-void percorreArvore(No* no) {
-    if (no != NULL) {
-        for (int i = 0; i < no->total; i++) {
-            percorreArvore(no->filhos[i]); //visita o filho a esquerda
+void percorreArvoreB(NoB* noB) {
+    if (noB != NULL) {
+        for (int i = 0; i < noB->total; i++) {
+            percorreArvoreB(noB->filhos[i]);
 
-            printf("%d ", no->chaves[i]);
+            printf("%d ", noB->chaves[i]);
         }
 
-        percorreArvore(no->filhos[no->total]); //visita ultimo filho (direita)
+        percorreArvoreB(noB->filhos[noB->total]);
     }
 }
 
-int pesquisaBinaria(No* no, int chave) {
-    int inicio = 0, fim = no->total - 1, meio;
+int pesquisaBinariaB(NoB* noB, int chave) {
+    int inicio = 0, fim = noB->total - 1, meio;
 
     while (inicio <= fim) {
-        contador++;
+        bCount++;
 
         meio = (inicio + fim) / 2;
 
-        if (no->chaves[meio] == chave) {
+        if (noB->chaves[meio] == chave) {
             return meio; //encontrou	
         }
-        else if (no->chaves[meio] > chave) {
+        else if (noB->chaves[meio] > chave) {
             fim = meio - 1;
         }
         else {
             inicio = meio + 1;
         }
     }
-    return inicio; //n o encontrou	
+    return inicio;
 }
 
-int localizaChave(ArvoreB* arvore, int chave) {
-    No* no = arvore->raiz;
+int localizaChaveB(ArvoreB* arvore, int chave) {
+    NoB* noB = arvore->raiz;
 
-    while (no != NULL) {
-        int i = pesquisaBinaria(no, chave);
+    while (noB != NULL) {
+        int i = pesquisaBinariaB(noB, chave);
 
-        if (i < no->total && no->chaves[i] == chave) {
-            return 1; //encontrou
+        if (i < noB->total && noB->chaves[i] == chave) {
+            return 1;
         }
         else {
-            no = no->filhos[i];
+            noB = noB->filhos[i];
         }
     }
 
-    return 0; //n o encontrou	
+    return 0;
 }
 
-No* localizaNo(ArvoreB* arvore, int chave) {
-    No* no = arvore->raiz;
+NoB* localizaNoB(ArvoreB* arvore, int chave) {
+    NoB* noB = arvore->raiz;
 
-    while (no != NULL) {
-        contador++;
+    while (noB != NULL) {
+        bCount++;
 
-        int i = pesquisaBinaria(no, chave);
+        int i = pesquisaBinariaB(noB, chave);
 
-        if (no->filhos[i] == NULL)
-            return no; //encontrou n 
+        if (noB->filhos[i] == NULL)
+            return noB;
         else
-            no = no->filhos[i];
+            noB = noB->filhos[i];
     }
 
-    return NULL; //n o encontrou nenhum n 
+    return NULL;
 }
 
-void adicionaChaveNo(No* no, No* novo, int chave) {
-    int i = pesquisaBinaria(no, chave);
+void adicionaChaveNoB(NoB* noB, NoB* novo, int chave) {
+    int i = pesquisaBinariaB(noB, chave);
 
-    contador++;
+    bCount++;
 
-    for (int j = no->total - 1; j >= i; j--) {
-        no->chaves[j + 1] = no->chaves[j];
-        no->filhos[j + 2] = no->filhos[j + 1];
+    for (int j = noB->total - 1; j >= i; j--) {
+        noB->chaves[j + 1] = noB->chaves[j];
+        noB->filhos[j + 2] = noB->filhos[j + 1];
     }
 
-    no->chaves[i] = chave;
-    no->filhos[i + 1] = novo;
+    noB->chaves[i] = chave;
+    noB->filhos[i + 1] = novo;
 
-    no->total++;
+    noB->total++;
 }
 
-int transbordo(ArvoreB* arvore, No* no) {
-    contador++;
+int transbordoB(ArvoreB* arvore, NoB* noB) {
+    bCount++;
 
-    return no->total > arvore->ordem * 2;
+    return noB->total > arvore->ordem * 2;
 }
 
-No* divideNo(ArvoreB* arvore, No* no) {
-    int meio = no->total / 2;
-    No* novo = criaNo(arvore);
-    novo->pai = no->pai;
+NoB* divideNoB(ArvoreB* arvore, NoB* noB) {
+    int meio = noB->total / 2;
+    NoB* novo = criaNoB(arvore);
+    novo->pai = noB->pai;
 
-    contador++;
+    bCount++;
 
-    for (int i = meio + 1; i < no->total; i++) {
-        novo->filhos[novo->total] = no->filhos[i];
-        novo->chaves[novo->total] = no->chaves[i];
+    for (int i = meio + 1; i < noB->total; i++) {
+        novo->filhos[novo->total] = noB->filhos[i];
+        novo->chaves[novo->total] = noB->chaves[i];
         if (novo->filhos[novo->total] != NULL) novo->filhos[novo->total]->pai = novo;
 
         novo->total++;
     }
 
-    novo->filhos[novo->total] = no->filhos[no->total];
+    novo->filhos[novo->total] = noB->filhos[noB->total];
     if (novo->filhos[novo->total] != NULL) novo->filhos[novo->total]->pai = novo;
-    no->total = meio;
+    noB->total = meio;
     return novo;
 }
 
-void adicionaChaveRecursivo(ArvoreB* arvore, No* no, No* novo, int chave) {
-    contador++;
+void adicionaChaveRecursivoB(ArvoreB* arvore, NoB* noB, NoB* novo, int chave) {
+    bCount++;
 
-    adicionaChaveNo(no, novo, chave);
+    adicionaChaveNoB(noB, novo, chave);
 
-    if (transbordo(arvore, no)) {
-        int promovido = no->chaves[arvore->ordem];
-        No* novo = divideNo(arvore, no);
+    if (transbordoB(arvore, noB)) {
+        int promovido = noB->chaves[arvore->ordem];
+        NoB* novo = divideNoB(arvore, noB);
 
-        if (no->pai == NULL) {
-            contador++;
+        if (noB->pai == NULL) {
+            bCount++;
 
-            No* pai = criaNo(arvore);
-            pai->filhos[0] = no;
-            adicionaChaveNo(pai, novo, promovido);
+            NoB* pai = criaNoB(arvore);
+            pai->filhos[0] = noB;
+            adicionaChaveNoB(pai, novo, promovido);
 
-            no->pai = pai;
+            noB->pai = pai;
             novo->pai = pai;
             arvore->raiz = pai;
         }
         else
-            adicionaChaveRecursivo(arvore, no->pai, novo, promovido);
+            adicionaChaveRecursivoB(arvore, noB->pai, novo, promovido);
     }
 }
 
-void adicionaChave(ArvoreB* arvore, int chave) {
-    No* no = localizaNo(arvore, chave);
+void adicionaChaveB(ArvoreB* arvore, int chave) {
+    NoB* noB = localizaNoB(arvore, chave);
 
-    adicionaChaveRecursivo(arvore, no, NULL, chave);
+    adicionaChaveRecursivoB(arvore, noB, NULL, chave);
 }
 
-void removeChave(ArvoreB* arvore, int chave) {
-    removeChaveRecursivo(arvore, arvore->raiz, chave);
+void removeChaveB(ArvoreB* arvore, int chave) {
+    removeChaveRecursivoB(arvore, arvore->raiz, chave);
 }
 
-void removeChaveRecursivo(ArvoreB* arvore, No* no, int chave) {
-    if (no == NULL)
+void removeChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave) {
+    if (noB == NULL)
         return;
 
-    int indice = pesquisaBinaria(no, chave);
+    int indice = pesquisaBinariaB(noB, chave);
 
-    if (indice < no->total && no->chaves[indice] == chave) {
-        if (no->filhos[indice] != NULL) {
-            // Caso 1: O nó contém a chave e é um nó interno da árvore B
-            No* noSubstituto = no->filhos[indice + 1];
+    if (indice < noB->total && noB->chaves[indice] == chave) {
+        if (noB->filhos[indice] != NULL) {
+            NoB* noSubstituto = noB->filhos[indice + 1];
 
-            // Encontra o nó mais à esquerda na subárvore direita
             while (noSubstituto->filhos[0] != NULL)
                 noSubstituto = noSubstituto->filhos[0];
 
-            // Substitui a chave pelo valor do nó mais à esquerda
-            no->chaves[indice] = noSubstituto->chaves[0];
+            noB->chaves[indice] = noSubstituto->chaves[0];
 
-            // Remove a chave do nó mais à esquerda recursivamente
-            removeChaveRecursivo(arvore, noSubstituto, noSubstituto->chaves[0]);
+            removeChaveRecursivoB(arvore, noSubstituto, noSubstituto->chaves[0]);
         }
         else {
-            // Caso 2: O nó contém a chave e é uma folha da árvore B
-            removerChaveNo(no, indice);
+            removerChaveNoB(noB, indice);
         }
     }
     else {
-        // Caso 3: A chave não está no nó atual
-        removeChaveRecursivo(arvore, no->filhos[indice], chave);
+        removeChaveRecursivoB(arvore, noB->filhos[indice], chave);
     }
 }
 
-void removerChaveNo(No* no, int indice) {
-    for (int i = indice; i < no->total - 1; i++) {
-        no->chaves[i] = no->chaves[i + 1];
-        no->filhos[i + 1] = no->filhos[i + 2];
+void removerChaveNoB(NoB* noB, int indice) {
+    for (int i = indice; i < noB->total - 1; i++) {
+        noB->chaves[i] = noB->chaves[i + 1];
+        noB->filhos[i + 1] = noB->filhos[i + 2];
     }
 
-    no->total--;
+    noB->total--;
 }
 
-void redistribuirChaves(No* pai, No* filhoEsq, No* filhoDir, int indiceFilhoEsq) {
-    // Move a chave do pai para o filho esquerdo
+void redistribuirChavesB(NoB* pai, NoB* filhoEsq, NoB* filhoDir, int indiceFilhoEsq) {
     filhoEsq->chaves[filhoEsq->total] = pai->chaves[indiceFilhoEsq];
     filhoEsq->filhos[filhoEsq->total + 1] = filhoDir->filhos[0];
     filhoEsq->total++;
 
-    // Move a chave do filho direito para o pai
     pai->chaves[indiceFilhoEsq] = filhoDir->chaves[0];
 
-    // Realoca as chaves e filhos no filho direito
     for (int i = 0; i < filhoDir->total - 1; i++) {
         filhoDir->chaves[i] = filhoDir->chaves[i + 1];
         filhoDir->filhos[i] = filhoDir->filhos[i + 1];
@@ -263,51 +252,4 @@ void redistribuirChaves(No* pai, No* filhoEsq, No* filhoDir, int indiceFilhoEsq)
 
     filhoDir->filhos[filhoDir->total - 1] = filhoDir->filhos[filhoDir->total];
     filhoDir->total--;
-}
-
-void analisarComplexidadeArvoreB(int ordem, int tamanhoMax, int numConjuntos) {
-    ArvoreB* arvore = criaArvore(ordem);
-
-    printf("tamanho,adicao,remocao");
-
-    for (int i = 1; i <= tamanhoMax; i++) {
-        int totalAdicao = 0;
-        int totalRemocao = 0;
-
-        for (int k = 0; k < numConjuntos; k++) {
-            contador = 0;
-
-            for (int j = 0; j < i; j++)
-                adicionaChave(arvore, rand() % i);
-
-            totalAdicao += contador;
-
-            contador = 0;
-
-            for (int j = 0; j < i; j++)
-                removeChave(arvore, rand() % i);
-
-            totalRemocao += contador;
-        }
-
-        int mediaAdicao = totalAdicao / numConjuntos;
-        int mediaRemocao = totalRemocao / numConjuntos;
-
-        printf("\n%d,%d,%d", i, mediaAdicao, mediaRemocao);
-    }
-
-    printf("\n--------\n");
-}
-
-int main() {
-    srand(time(NULL));
-
-    int tamanho = 1000;
-    int numConjuntos = 10;
-
-    analisarComplexidadeArvoreB(1, tamanho, numConjuntos);
-    analisarComplexidadeArvoreB(5, tamanho, numConjuntos);
-    analisarComplexidadeArvoreB(10, tamanho, numConjuntos);
-
-    return 0;
 }
