@@ -9,11 +9,11 @@
 int findValueInArray(int array[], int size, int value) {
     for (int i = 0; i < size; i++) {
         if (array[i] == value) {
-            return 1; // found
+            return 1;
         }
     }
 
-    return 0; // not found
+    return 0;
 }
 
 void popula(int vetor[], int tamanho) {
@@ -28,39 +28,80 @@ void popula(int vetor[], int tamanho) {
     }
 }
 
+#ifdef _WIN32
+const char DIRECTORY_SEPARATOR = '\\';
+#else
+const char DIRECTORY_SEPARATOR = '/';
+#endif
+
+char* getCurrentPath() {
+    char* currentDir = (char*)malloc(FILENAME_MAX);
+    if (currentDir == NULL) {
+        printf("Erro ao alocar memória\n");
+        return NULL;
+    }
+
+    strcpy(currentDir, __FILE__);
+
+    char* lastSeparator = strrchr(currentDir, DIRECTORY_SEPARATOR);
+    if (lastSeparator != NULL) {
+        *lastSeparator = '\0';
+    }
+
+    return currentDir;
+}
+
 void main() {
     extern long int avlCount;
     extern long int bCount;
 
     srand(time(NULL));
 
-    FILE *arquivomedio;
-    FILE *arquivopior;
-
-    arquivomedio = fopen("/home/asaas/CLionProjects/tree-algorithmic-complexity/output/worstCase.csv", "w");
-    if (arquivomedio == NULL) {
-        printf("Erro ao abrir arquivo Caso Medio\n");
-        return;
+    char* currentPath = getCurrentPath();
+    if (currentPath == NULL) {
+        printf("Ocorreu um erro ao obter diretório raiz do projeto\n");
+        return 1;
     }
 
-    arquivopior = fopen("/home/asaas/CLionProjects/tree-algorithmic-complexity/output/piorCaso.csv", "w");
-    if (arquivopior == NULL) {
-        printf("Erro ao abrir arquivo PiorCaso\n");
-        return;
+    char outputPath[FILENAME_MAX];
+    snprintf(outputPath, FILENAME_MAX, "%s%coutput%c", currentPath, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+
+    char addFilePath[FILENAME_MAX];
+    snprintf(addFilePath, FILENAME_MAX, "%savgCaseAdd.csv", outputPath);
+
+    char remFilePath[FILENAME_MAX];
+    snprintf(remFilePath, FILENAME_MAX, "%savgCaseRem.csv", outputPath);
+
+    FILE* arquivomedioadd = fopen(addFilePath, "w");
+    if (arquivomedioadd == NULL) {
+        printf("Erro ao abrir arquivo csv da média da adição\n");
+        free(currentPath);
+        fclose(arquivomedioadd);
+        return 1;
     }
 
-    fprintf(arquivomedio, "%s", "n;RN;AVL;B-1;B-5;B-10\n");
-    fprintf(arquivopior, "%s", "n;RN;AVL;B-1;B-5;B-10\n");
+    FILE* arquivomediorem = fopen(remFilePath, "w");
+    if (arquivomediorem == NULL) {
+        printf("Erro ao abrir arquivo csv da média da remoção\n");
+        free(currentPath);
+        fclose(arquivomedioadd);
+        fclose(arquivomediorem);
+        return 1;
+    }
+
+    fprintf(arquivomedioadd, "%s", "n;RN;AVL;B-1;B-5;B-10\n");
+    fprintf(arquivomediorem, "%s", "n;RN;AVL;B-1;B-5;B-10\n");
 
     int numRegistros = 1000;
 
     for (int j = 1; j < numRegistros; j++) {
         long int media_rn = 0, media_avl = 0, media_b1 = 0, media_b5 = 0, media_b10 = 0;
-        //printf("Execucao: %d\n", j);
-        //Rb_arvore a com Caso Medio
+        long int media_rn_remocao = 0, media_avl_remocao = 0, media_b1_remocao = 0, media_b5_remocao = 0, media_b10_remocao = 0;
+
         int* v = malloc(j * sizeof(int));
 
         for (int numero = 0; numero < 10; numero++) {
+            int rem = rand() % j;
             popula(v, j);
 
             Arvore *arvoreAVL = cria();
@@ -81,14 +122,23 @@ void main() {
                 bCount = 0;
                 adicionaChaveB(arvoreBOrdem1, v[i]);
                 media_b1 += bCount;
+                bCount = 0;
+                removerChaveB(arvoreBOrdem1, rem);
+                media_b1_remocao += bCount;
 
                 bCount = 0;
                 adicionaChaveB(arvoreBOrdem5, v[i]);
                 media_b5 += bCount;
+                bCount = 0;
+                removerChaveB(arvoreBOrdem5, rem);
+                media_b5_remocao += bCount;
 
                 bCount = 0;
                 adicionaChaveB(arvoreBOrdem10, v[i]);
                 media_b10 += bCount;
+                bCount = 0;
+                removerChaveB(arvoreBOrdem10, rem);
+                media_b10_remocao += bCount;
             }
 
             free(arvoreAVL);
@@ -98,58 +148,23 @@ void main() {
             free(arvoreBOrdem10);
         }
 
-        fprintf(arquivomedio, "%d;%ld;", j, media_rn / 10);
-        fprintf(arquivomedio, "%ld;", media_avl / 10);
-        fprintf(arquivomedio, "%ld;", media_b1 / 10);
-        fprintf(arquivomedio, "%ld;", media_b5 / 10);
-        fprintf(arquivomedio, "%ld", media_b10 / 10);
-        fprintf(arquivomedio, "\n");
+        fprintf(arquivomedioadd, "%d;%ld;", j, media_rn / 10);
+        fprintf(arquivomedioadd, "%ld;", media_avl / 10);
+        fprintf(arquivomedioadd, "%ld;", media_b1 / 10);
+        fprintf(arquivomedioadd, "%ld;", media_b5 / 10);
+        fprintf(arquivomedioadd, "%ld", media_b10 / 10);
+        fprintf(arquivomedioadd, "\n");
 
-        //Arvore com Pior Caso
-        Arvore *arvoreAVLPior = cria();
-        Rb_arvore* rnPior = rb_criarArvore();
-        ArvoreB* arvoreBOrdem1Pior = criaArvoreB(1);
-        ArvoreB* arvoreBOrdem5Pior = criaArvoreB(5);
-        ArvoreB* arvoreBOrdem10Pior = criaArvoreB(10);
-
-        long int bContador1 = 0, bContador5 = 0, bContador10 = 0, contadorRN = 0, avlContador = 0;
-        for (int i = 1; i <= j; i++) {
-            avlCount = 0;
-            adicionar(arvoreAVLPior, i);
-            avlContador += avlCount;
-
-            RNcontador = 0;
-            rb_adicionar(rnPior, i);
-            contadorRN += RNcontador;
-            
-            bCount = 0;
-            adicionaChaveB(arvoreBOrdem1Pior, v[i]);
-            bContador1 += bCount;
-
-            bCount = 0;
-            adicionaChaveB(arvoreBOrdem5Pior, v[i]);
-            bContador5 += bCount;
-
-            bCount = 0;
-            adicionaChaveB(arvoreBOrdem10Pior, v[i]);
-            bContador10 += bCount;
-        }
-
-        free(arvoreAVLPior);
-        free(rnPior);
-        free(arvoreBOrdem1Pior);
-        free(arvoreBOrdem5Pior);
-        free(arvoreBOrdem10Pior);
-
-        fprintf(arquivopior, "%d;%ld;", j, contadorRN);
-        fprintf(arquivopior, "%ld;", avlContador);
-        fprintf(arquivopior, "%ld;", bContador1);
-        fprintf(arquivopior, "%ld;", bContador5);
-        fprintf(arquivopior, "%ld", bContador10);
-        fprintf(arquivopior, "\n");
+        fprintf(arquivomediorem, "%d;%ld;", j, media_rn_remocao / 10);
+        fprintf(arquivomediorem, "%ld;", media_avl_remocao / 10);
+        fprintf(arquivomediorem, "%ld;", media_b1_remocao / 10);
+        fprintf(arquivomediorem, "%ld;", media_b5_remocao / 10);
+        fprintf(arquivomediorem, "%ld", media_b10_remocao / 10);
+        fprintf(arquivomediorem, "\n");
     }
 
-    fclose(arquivomedio);
-    fclose(arquivopior);
-    printf("FIM");
+    fclose(arquivomedioadd);
+    fclose(arquivomediorem);
+
+    free(currentPath);
 }
