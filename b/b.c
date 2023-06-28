@@ -28,8 +28,8 @@ int transbordoB(ArvoreB*, NoB*);
 NoB* divideNoB(ArvoreB*, NoB*);
 void adicionaChaveRecursivoB(ArvoreB*, NoB*, NoB*, int);
 void adicionaChaveB(ArvoreB*, int);
-void removeChaveB(ArvoreB* arvore, int chave);
-void removeChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave);
+void removerChaveB(ArvoreB* arvore, int chave);
+void removerChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave);
 void removerChaveNoB(NoB* noB, int indice);
 void redistribuirChavesB(NoB* pai, NoB* filhoEsq, NoB* filhoDir, int indiceFilhoEsq);
 
@@ -199,13 +199,15 @@ void adicionaChaveB(ArvoreB* arvore, int chave) {
     adicionaChaveRecursivoB(arvore, noB, NULL, chave);
 }
 
-void removeChaveB(ArvoreB* arvore, int chave) {
-    removeChaveRecursivoB(arvore, arvore->raiz, chave);
+void removerChaveB(ArvoreB* arvore, int chave) {
+    removerChaveRecursivoB(arvore, arvore->raiz, chave);
 }
 
-void removeChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave) {
+void removerChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave) {
     if (noB == NULL)
         return;
+
+    bCount++;
 
     int indice = pesquisaBinariaB(noB, chave);
 
@@ -213,19 +215,21 @@ void removeChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave) {
         if (noB->filhos[indice] != NULL) {
             NoB* noSubstituto = noB->filhos[indice + 1];
 
-            while (noSubstituto->filhos[0] != NULL)
+            while (noSubstituto->filhos[0] != NULL) {
+                bCount++;
                 noSubstituto = noSubstituto->filhos[0];
+            }
 
             noB->chaves[indice] = noSubstituto->chaves[0];
 
-            removeChaveRecursivoB(arvore, noSubstituto, noSubstituto->chaves[0]);
+            removerChaveRecursivoB(arvore, noSubstituto, noSubstituto->chaves[0]);
         }
         else {
             removerChaveNoB(noB, indice);
         }
     }
     else {
-        removeChaveRecursivoB(arvore, noB->filhos[indice], chave);
+        removerChaveRecursivoB(arvore, noB->filhos[indice], chave);
     }
 }
 
