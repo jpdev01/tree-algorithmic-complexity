@@ -7,6 +7,7 @@
 #include <time.h>
 
 #define NUMBER_SETS 10
+#define RESET_VALUE 0
 
 int findValueInArray(int array[], int size, int value) {
     for (int i = 0; i < size; i++) {
@@ -101,16 +102,16 @@ void main() {
 
     for (int j = 1; j <= numRegistros; j++) {
         long int
-            media_rn = 0,
-            media_avl = 0,
-            media_b1 = 0,
-            media_b5 = 0,
-            media_b10 = 0,
-            media_rn_remocao = 0,
-            media_avl_remocao = 0,
-            media_b1_remocao = 0,
-            media_b5_remocao = 0,
-            media_b10_remocao = 0;
+            media_rn = RESET_VALUE,
+            media_avl = RESET_VALUE,
+            media_b1 = RESET_VALUE,
+            media_b5 = RESET_VALUE,
+            media_b10 = RESET_VALUE,
+            media_rn_remocao = RESET_VALUE,
+            media_avl_remocao = RESET_VALUE,
+            media_b1_remocao = RESET_VALUE,
+            media_b5_remocao = RESET_VALUE,
+            media_b10_remocao = RESET_VALUE;
 
         int* v = malloc(j * sizeof(int));
 
@@ -125,23 +126,24 @@ void main() {
 
             for (int i = 0; i < j; i++) {
                 int valueToAdd = v[i];
-                avlCount = 0;
+
+                avlCount = RESET_VALUE;
                 adicionarValorAVL(arvoreAVL, valueToAdd);
                 media_avl += avlCount;
 
-                rnCount = 0;
+                rnCount = RESET_VALUE;
                 adicionarValorRN(arvoreRN, valueToAdd);
                 media_rn += rnCount;
 
-                bCount = 0;
+                bCount = RESET_VALUE;
                 adicionaChaveB(arvoreBOrdem1, valueToAdd);
                 media_b1 += bCount;
 
-                bCount = 0;
+                bCount = RESET_VALUE;
                 adicionaChaveB(arvoreBOrdem5, valueToAdd);
                 media_b5 += bCount;
 
-                bCount = 0;
+                bCount = RESET_VALUE;
                 adicionaChaveB(arvoreBOrdem10, valueToAdd);
                 media_b10 += bCount;
             }
@@ -150,23 +152,23 @@ void main() {
                 int indiceAleatorio = rand() % (j + 1);
                 int valorAleatorio = (indiceAleatorio == (j + 1)) ? -1 : v[indiceAleatorio];
 
-                avlCount = 0;
+                avlCount = RESET_VALUE;
                 removerValorAVL(arvoreAVL, valorAleatorio);
                 media_avl_remocao += avlCount;
 
-                rnCount = 0;
+                rnCount = RESET_VALUE;
                 removerValorRN(arvoreRN, valorAleatorio);
                 media_rn_remocao += rnCount;
 
-                bCount = 0;
+                bCount = RESET_VALUE;
                 removerChaveB(arvoreBOrdem1, valorAleatorio);
                 media_b1_remocao += bCount;
 
-                bCount = 0;
+                bCount = RESET_VALUE;
                 removerChaveB(arvoreBOrdem5, valorAleatorio);
                 media_b5_remocao += bCount;
 
-                bCount = 0;
+                bCount = RESET_VALUE;
                 removerChaveB(arvoreBOrdem10, valorAleatorio);
                 media_b10_remocao += bCount;
             }
