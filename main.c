@@ -113,30 +113,32 @@ void main() {
             ArvoreB* arvoreBOrdem10 = criaArvoreB(10);
 
             for (int i = 0; i < j; i++) {
+                int valueToAdd = v[i];
+
                 avlCount = 0;
-                adicionar(arvoreAVL, v[i]);
+                adicionar(arvoreAVL, valueToAdd);
                 media_avl += avlCount;
 
                 RNcontador=0;
-                rb_adicionar(rbArvore, v[i]);
+                rb_adicionar(rbArvore, valueToAdd);
                 media_rn += RNcontador;
 
                 bCount = 0;
-                adicionaChaveB(arvoreBOrdem1, v[i]);
+                adicionaChaveB(arvoreBOrdem1, valueToAdd);
                 media_b1 += bCount;
                 bCount = 0;
                 removerChaveB(arvoreBOrdem1, rem);
                 media_b1_remocao += bCount;
 
                 bCount = 0;
-                adicionaChaveB(arvoreBOrdem5, v[i]);
+                adicionaChaveB(arvoreBOrdem5, valueToAdd);
                 media_b5 += bCount;
                 bCount = 0;
                 removerChaveB(arvoreBOrdem5, rem);
                 media_b5_remocao += bCount;
 
                 bCount = 0;
-                adicionaChaveB(arvoreBOrdem10, v[i]);
+                adicionaChaveB(arvoreBOrdem10, valueToAdd);
                 media_b10 += bCount;
                 bCount = 0;
                 removerChaveB(arvoreBOrdem10, rem);
