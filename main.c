@@ -54,6 +54,17 @@ char* getCurrentPath() {
     return currentDir;
 }
 
+FILE* getFile(char* currentPath, char * fileName) {
+    char csvPath[FILENAME_MAX];
+    snprintf(csvPath, FILENAME_MAX, "%s%ccsv%c", currentPath, SEP, SEP);
+
+    char addFilePath[FILENAME_MAX];
+    snprintf(addFilePath, FILENAME_MAX, fileName, csvPath);
+
+    FILE* arquivo = fopen(addFilePath, "w");
+    return arquivo;
+}
+
 void main() {
     extern long int avlCount;
     extern long int bCount;
@@ -66,16 +77,7 @@ void main() {
         return;
     }
 
-    char csvPath[FILENAME_MAX];
-    snprintf(csvPath, FILENAME_MAX, "%s%ccsv%c", currentPath, SEP, SEP);
-
-    char addFilePath[FILENAME_MAX];
-    snprintf(addFilePath, FILENAME_MAX, "%savgCaseAdd.csv", csvPath);
-
-    char remFilePath[FILENAME_MAX];
-    snprintf(remFilePath, FILENAME_MAX, "%savgCaseRem.csv", csvPath);
-
-    FILE* arquivomedioadd = fopen(addFilePath, "w");
+    FILE* arquivomedioadd = getFile(currentPath, "%savgCaseAdd.csv");
     if (arquivomedioadd == NULL) {
         printf("Erro ao abrir arquivo csv da média da adição\n");
         free(currentPath);
@@ -83,7 +85,7 @@ void main() {
         return;
     }
 
-    FILE* arquivomediorem = fopen(remFilePath, "w");
+    FILE* arquivomediorem = getFile(currentPath, "%savgCaseRem.csv");
     if (arquivomediorem == NULL) {
         printf("Erro ao abrir arquivo csv da média da remoção\n");
         free(currentPath);
