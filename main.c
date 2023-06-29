@@ -150,19 +150,25 @@ void main() {
             free(arvoreBOrdem10);
         }
 
-        fprintf(arquivomedioadd, "%d;%ld;", j, media_rn / NUMBER_SETS);
-        fprintf(arquivomedioadd, "%ld;", media_avl / NUMBER_SETS);
-        fprintf(arquivomedioadd, "%ld;", media_b1 / NUMBER_SETS);
-        fprintf(arquivomedioadd, "%ld;", media_b5 / NUMBER_SETS);
-        fprintf(arquivomedioadd, "%ld", media_b10 / NUMBER_SETS);
-        fprintf(arquivomedioadd, "\n");
+        fprintf(arquivomedioadd,
+                "%d;%ld;%ld;%ld;%ld;%ld\n",
+                j,
+                media_rn / NUMBER_SETS,
+                media_avl / NUMBER_SETS,
+                media_b1 / NUMBER_SETS,
+                media_b5 / NUMBER_SETS,
+                media_b10 / NUMBER_SETS
+        );
 
-        fprintf(arquivomediorem, "%d;%ld;", j, media_rn_remocao / NUMBER_SETS);
-        fprintf(arquivomediorem, "%ld;", media_avl_remocao / NUMBER_SETS);
-        fprintf(arquivomediorem, "%ld;", media_b1_remocao / NUMBER_SETS);
-        fprintf(arquivomediorem, "%ld;", media_b5_remocao / NUMBER_SETS);
-        fprintf(arquivomediorem, "%ld", media_b10_remocao / NUMBER_SETS);
-        fprintf(arquivomediorem, "\n");
+        fprintf(arquivomediorem,
+                "%d;%ld;%ld;%ld;%ld;%ld\n",
+                j,
+                media_rn_remocao / NUMBER_SETS,
+                media_avl_remocao / NUMBER_SETS,
+                media_b1_remocao / NUMBER_SETS,
+                media_b5_remocao / NUMBER_SETS,
+                media_b10_remocao / NUMBER_SETS
+        );
     }
 
     fclose(arquivomedioadd);
