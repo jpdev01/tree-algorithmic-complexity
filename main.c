@@ -1,6 +1,6 @@
-#include "avl/avl.c"
-#include "rb/rb.c"
-#include "b/b.c"
+#include "trees/avl.c"
+#include "trees/rn.c"
+#include "trees/b.c"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,6 +19,7 @@ int findValueInArray(int array[], int size, int value) {
 void popula(int vetor[], int tamanho) {
     int numero;
     int i = 0;
+
     while (i != tamanho) {
         numero = rand() % 5000;
         if (findValueInArray(vetor, tamanho, numero) == 0) {
@@ -29,21 +30,21 @@ void popula(int vetor[], int tamanho) {
 }
 
 #ifdef _WIN32
-const char DIRECTORY_SEPARATOR = '\\';
+const char SEP = '\\';
 #else
-const char DIRECTORY_SEPARATOR = '/';
+const char SEP = '/';
 #endif
 
 char* getCurrentPath() {
     char* currentDir = (char*)malloc(FILENAME_MAX);
     if (currentDir == NULL) {
-        printf("Erro ao alocar memória\n");
+        printf("Erro ao alocar memÃ³ria\n");
         return NULL;
     }
 
     strcpy(currentDir, __FILE__);
 
-    char* lastSeparator = strrchr(currentDir, DIRECTORY_SEPARATOR);
+    char* lastSeparator = strrchr(currentDir, SEP);
     if (lastSeparator != NULL) {
         *lastSeparator = '\0';
     }
@@ -59,34 +60,34 @@ void main() {
 
     char* currentPath = getCurrentPath();
     if (currentPath == NULL) {
-        printf("Ocorreu um erro ao obter diretório raiz do projeto\n");
-        return 1;
+        printf("Ocorreu um erro ao obter diretÃ³rio raiz do projeto\n");
+        return;
     }
 
-    char outputPath[FILENAME_MAX];
-    snprintf(outputPath, FILENAME_MAX, "%s%coutput%c", currentPath, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+    char csvPath[FILENAME_MAX];
+    snprintf(csvPath, FILENAME_MAX, "%s%ccsv%c", currentPath, SEP, SEP);
 
     char addFilePath[FILENAME_MAX];
-    snprintf(addFilePath, FILENAME_MAX, "%savgCaseAdd.csv", outputPath);
+    snprintf(addFilePath, FILENAME_MAX, "%savgCaseAdd.csv", csvPath);
 
     char remFilePath[FILENAME_MAX];
-    snprintf(remFilePath, FILENAME_MAX, "%savgCaseRem.csv", outputPath);
+    snprintf(remFilePath, FILENAME_MAX, "%savgCaseRem.csv", csvPath);
 
     FILE* arquivomedioadd = fopen(addFilePath, "w");
     if (arquivomedioadd == NULL) {
-        printf("Erro ao abrir arquivo csv da média da adição\n");
+        printf("Erro ao abrir arquivo csv da mÃ©dia da adiÃ§Ã£o\n");
         free(currentPath);
         fclose(arquivomedioadd);
-        return 1;
+        return;
     }
 
     FILE* arquivomediorem = fopen(remFilePath, "w");
     if (arquivomediorem == NULL) {
-        printf("Erro ao abrir arquivo csv da média da remoção\n");
+        printf("Erro ao abrir arquivo csv da mÃ©dia da remoÃ§Ã£o\n");
         free(currentPath);
         fclose(arquivomedioadd);
         fclose(arquivomediorem);
-        return 1;
+        return;
     }
 
     fprintf(arquivomedioadd, "%s", "n;RN;AVL;B-1;B-5;B-10\n");
@@ -94,55 +95,79 @@ void main() {
 
     int numRegistros = 1000;
 
-    for (int j = 1; j < numRegistros; j++) {
-        long int media_rn = 0, media_avl = 0, media_b1 = 0, media_b5 = 0, media_b10 = 0;
-        long int media_rn_remocao = 0, media_avl_remocao = 0, media_b1_remocao = 0, media_b5_remocao = 0, media_b10_remocao = 0;
+    for (int j = 1; j <= numRegistros; j++) {
+        long int 
+            media_rn = 0, 
+            media_avl = 0, 
+            media_b1 = 0, 
+            media_b5 = 0, 
+            media_b10 = 0, 
+            media_rn_remocao = 0, 
+            media_avl_remocao = 0, 
+            media_b1_remocao = 0, 
+            media_b5_remocao = 0, 
+            media_b10_remocao = 0;
 
         int* v = malloc(j * sizeof(int));
 
         for (int numero = 0; numero < 10; numero++) {
-            int rem = rand() % j;
             popula(v, j);
 
-            Arvore *arvoreAVL = cria();
-            Rb_arvore* rbArvore = rb_criarArvore();
-            ArvoreB* arvoreBOrdem1 = criaArvoreB(1);
-            ArvoreB* arvoreBOrdem5 = criaArvoreB(5);
-            ArvoreB* arvoreBOrdem10 = criaArvoreB(10);
+            ArvoreAVL* arvoreAVL = criarArvoreAVL();
+            ArvoreRN* arvoreRN = criarArvoreRN();
+            ArvoreB* arvoreBOrdem1 = criarArvoreB(1);
+            ArvoreB* arvoreBOrdem5 = criarArvoreB(5);
+            ArvoreB* arvoreBOrdem10 = criarArvoreB(10);
 
             for (int i = 0; i < j; i++) {
                 avlCount = 0;
-                adicionar(arvoreAVL, v[i]);
+                adicionarValorAVL(arvoreAVL, v[i]);
                 media_avl += avlCount;
 
-                RNcontador=0;
-                rb_adicionar(rbArvore, v[i]);
-                media_rn += RNcontador;
+                rnCount = 0;
+                adicionarValorRN(arvoreRN, v[i]);
+                media_rn += rnCount;
 
                 bCount = 0;
                 adicionaChaveB(arvoreBOrdem1, v[i]);
                 media_b1 += bCount;
-                bCount = 0;
-                removerChaveB(arvoreBOrdem1, rem);
-                media_b1_remocao += bCount;
 
                 bCount = 0;
                 adicionaChaveB(arvoreBOrdem5, v[i]);
                 media_b5 += bCount;
-                bCount = 0;
-                removerChaveB(arvoreBOrdem5, rem);
-                media_b5_remocao += bCount;
 
                 bCount = 0;
                 adicionaChaveB(arvoreBOrdem10, v[i]);
                 media_b10 += bCount;
+            }
+
+            for (int i = 0; i < j; i++) {
+                int indiceAleatorio = rand() % (j + 1);
+                int valorAleatorio = (indiceAleatorio == (j + 1)) ? -1 : v[indiceAleatorio];
+
+                avlCount = 0;
+                removerValorAVL(arvoreAVL, valorAleatorio);
+                media_avl_remocao += avlCount;
+
+                rnCount = 0;
+                removerValorRN(arvoreRN, valorAleatorio);
+                media_rn_remocao += rnCount;
+
                 bCount = 0;
-                removerChaveB(arvoreBOrdem10, rem);
+                removerChaveB(arvoreBOrdem1, valorAleatorio);
+                media_b1_remocao += bCount;
+
+                bCount = 0;
+                removerChaveB(arvoreBOrdem5, valorAleatorio);
+                media_b5_remocao += bCount;
+
+                bCount = 0;
+                removerChaveB(arvoreBOrdem10, valorAleatorio);
                 media_b10_remocao += bCount;
             }
 
             free(arvoreAVL);
-            free(rbArvore);
+            free(arvoreRN);
             free(arvoreBOrdem1);
             free(arvoreBOrdem5);
             free(arvoreBOrdem10);
@@ -167,4 +192,6 @@ void main() {
     fclose(arquivomediorem);
 
     free(currentPath);
+
+    system("python graph.py");
 }
