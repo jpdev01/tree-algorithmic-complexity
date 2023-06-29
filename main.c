@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <time.h>
 
+#define NUMBER_SETS 10
+
 int findValueInArray(int array[], int size, int value) {
     for (int i = 0; i < size; i++) {
         if (array[i] == value) {
@@ -100,7 +102,7 @@ void main() {
 
         int* v = malloc(j * sizeof(int));
 
-        for (int numero = 0; numero < 10; numero++) {
+        for (int numero = 0; numero < NUMBER_SETS; numero++) {
             int rem = rand() % j;
             popula(v, j);
 
@@ -148,18 +150,18 @@ void main() {
             free(arvoreBOrdem10);
         }
 
-        fprintf(arquivomedioadd, "%d;%ld;", j, media_rn / 10);
-        fprintf(arquivomedioadd, "%ld;", media_avl / 10);
-        fprintf(arquivomedioadd, "%ld;", media_b1 / 10);
-        fprintf(arquivomedioadd, "%ld;", media_b5 / 10);
-        fprintf(arquivomedioadd, "%ld", media_b10 / 10);
+        fprintf(arquivomedioadd, "%d;%ld;", j, media_rn / NUMBER_SETS);
+        fprintf(arquivomedioadd, "%ld;", media_avl / NUMBER_SETS);
+        fprintf(arquivomedioadd, "%ld;", media_b1 / NUMBER_SETS);
+        fprintf(arquivomedioadd, "%ld;", media_b5 / NUMBER_SETS);
+        fprintf(arquivomedioadd, "%ld", media_b10 / NUMBER_SETS);
         fprintf(arquivomedioadd, "\n");
 
-        fprintf(arquivomediorem, "%d;%ld;", j, media_rn_remocao / 10);
-        fprintf(arquivomediorem, "%ld;", media_avl_remocao / 10);
-        fprintf(arquivomediorem, "%ld;", media_b1_remocao / 10);
-        fprintf(arquivomediorem, "%ld;", media_b5_remocao / 10);
-        fprintf(arquivomediorem, "%ld", media_b10_remocao / 10);
+        fprintf(arquivomediorem, "%d;%ld;", j, media_rn_remocao / NUMBER_SETS);
+        fprintf(arquivomediorem, "%ld;", media_avl_remocao / NUMBER_SETS);
+        fprintf(arquivomediorem, "%ld;", media_b1_remocao / NUMBER_SETS);
+        fprintf(arquivomediorem, "%ld;", media_b5_remocao / NUMBER_SETS);
+        fprintf(arquivomediorem, "%ld", media_b10_remocao / NUMBER_SETS);
         fprintf(arquivomediorem, "\n");
     }
 
