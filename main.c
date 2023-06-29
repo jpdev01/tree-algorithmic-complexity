@@ -37,7 +37,7 @@ const char DIRECTORY_SEPARATOR = '/';
 char* getCurrentPath() {
     char* currentDir = (char*)malloc(FILENAME_MAX);
     if (currentDir == NULL) {
-        printf("Erro ao alocar memória\n");
+        printf("Erro ao alocar memï¿½ria\n");
         return NULL;
     }
 
@@ -59,7 +59,7 @@ void main() {
 
     char* currentPath = getCurrentPath();
     if (currentPath == NULL) {
-        printf("Ocorreu um erro ao obter diretório raiz do projeto\n");
+        printf("Ocorreu um erro ao obter diretï¿½rio raiz do projeto\n");
         return 1;
     }
 
@@ -74,19 +74,19 @@ void main() {
 
     FILE* arquivomedioadd = fopen(addFilePath, "w");
     if (arquivomedioadd == NULL) {
-        printf("Erro ao abrir arquivo csv da média da adição\n");
+        printf("Erro ao abrir arquivo csv da mï¿½dia da adiï¿½ï¿½o\n");
         free(currentPath);
         fclose(arquivomedioadd);
-        return 1;
+        return;
     }
 
     FILE* arquivomediorem = fopen(remFilePath, "w");
     if (arquivomediorem == NULL) {
-        printf("Erro ao abrir arquivo csv da média da remoção\n");
+        printf("Erro ao abrir arquivo csv da mï¿½dia da remoï¿½ï¿½o\n");
         free(currentPath);
         fclose(arquivomedioadd);
         fclose(arquivomediorem);
-        return 1;
+        return;
     }
 
     fprintf(arquivomedioadd, "%s", "n;RN;AVL;B-1;B-5;B-10\n");
