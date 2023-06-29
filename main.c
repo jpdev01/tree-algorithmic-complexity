@@ -74,7 +74,7 @@ void main() {
 
     FILE* arquivomedioadd = fopen(addFilePath, "w");
     if (arquivomedioadd == NULL) {
-        printf("Erro ao abrir arquivo csv da m�dia da adi��o\n");
+        printf("Erro ao abrir arquivo csv da media da adicao\n");
         free(currentPath);
         fclose(arquivomedioadd);
         return;
@@ -82,7 +82,7 @@ void main() {
 
     FILE* arquivomediorem = fopen(remFilePath, "w");
     if (arquivomediorem == NULL) {
-        printf("Erro ao abrir arquivo csv da m�dia da remo��o\n");
+        printf("Erro ao abrir arquivo csv da media da remocao\n");
         free(currentPath);
         fclose(arquivomedioadd);
         fclose(arquivomediorem);
