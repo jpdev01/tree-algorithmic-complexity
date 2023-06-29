@@ -112,8 +112,6 @@ Rb_no* rb_localizar(Rb_arvore* arvore, int valor) {
 
 void percorrerProfundidadeInOrder(Rb_arvore* arvore, Rb_no* no, void (*callback)(int)) {
     if (no != arvore->nulo) {
-
-
         percorrerProfundidadeInOrder(arvore, no->esquerda,callback);
         callback(no->valor);
         percorrerProfundidadeInOrder(arvore, no->direita,callback);
