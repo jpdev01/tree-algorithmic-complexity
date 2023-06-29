@@ -17,7 +17,7 @@ typedef struct arvoreB {
     int ordem;
 } ArvoreB;
 
-ArvoreB* criaArvoreB(int);
+ArvoreB* criarArvoreB(int);
 NoB* criaNoB(ArvoreB*);
 void percorreArvoreB(NoB*);
 int pesquisaBinariaB(NoB*, int);
@@ -28,12 +28,11 @@ int transbordoB(ArvoreB*, NoB*);
 NoB* divideNoB(ArvoreB*, NoB*);
 void adicionaChaveRecursivoB(ArvoreB*, NoB*, NoB*, int);
 void adicionaChaveB(ArvoreB*, int);
-void removerChaveB(ArvoreB* arvore, int chave);
-void removerChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave);
-void removerChaveNoB(NoB* noB, int indice);
-void redistribuirChavesB(NoB* pai, NoB* filhoEsq, NoB* filhoDir, int indiceFilhoEsq);
+void removerChaveB(ArvoreB*, int);
+void removerChaveRecursivoB(ArvoreB*, NoB*, int);
+void removerChaveNoB(NoB*, int);
 
-ArvoreB* criaArvoreB(int ordem) {
+ArvoreB* criarArvoreB(int ordem) {
     ArvoreB* a = malloc(sizeof(ArvoreB));
     a->ordem = ordem;
     a->raiz = criaNoB(a);
@@ -79,7 +78,7 @@ int pesquisaBinariaB(NoB* noB, int chave) {
         meio = (inicio + fim) / 2;
 
         if (noB->chaves[meio] == chave) {
-            return meio; //encontrou	
+            return meio;	
         }
         else if (noB->chaves[meio] > chave) {
             fim = meio - 1;
@@ -204,10 +203,9 @@ void removerChaveB(ArvoreB* arvore, int chave) {
 }
 
 void removerChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave) {
+    bCount++;
     if (noB == NULL)
         return;
-
-    bCount++;
 
     int indice = pesquisaBinariaB(noB, chave);
 
@@ -234,26 +232,11 @@ void removerChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave) {
 }
 
 void removerChaveNoB(NoB* noB, int indice) {
+    bCount++;
     for (int i = indice; i < noB->total - 1; i++) {
         noB->chaves[i] = noB->chaves[i + 1];
         noB->filhos[i + 1] = noB->filhos[i + 2];
     }
 
     noB->total--;
-}
-
-void redistribuirChavesB(NoB* pai, NoB* filhoEsq, NoB* filhoDir, int indiceFilhoEsq) {
-    filhoEsq->chaves[filhoEsq->total] = pai->chaves[indiceFilhoEsq];
-    filhoEsq->filhos[filhoEsq->total + 1] = filhoDir->filhos[0];
-    filhoEsq->total++;
-
-    pai->chaves[indiceFilhoEsq] = filhoDir->chaves[0];
-
-    for (int i = 0; i < filhoDir->total - 1; i++) {
-        filhoDir->chaves[i] = filhoDir->chaves[i + 1];
-        filhoDir->filhos[i] = filhoDir->filhos[i + 1];
-    }
-
-    filhoDir->filhos[filhoDir->total - 1] = filhoDir->filhos[filhoDir->total];
-    filhoDir->total--;
 }
