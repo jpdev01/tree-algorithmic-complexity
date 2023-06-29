@@ -59,7 +59,7 @@ void main() {
 
     char* currentPath = getCurrentPath();
     if (currentPath == NULL) {
-        printf("Ocorreu um erro ao obter diret�rio raiz do projeto\n");
+        printf("Ocorreu um erro ao obter diretorio raiz do projeto\n");
         return;
     }
 
