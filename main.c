@@ -122,24 +122,25 @@ void main() {
             ArvoreB* arvoreBOrdem10 = criarArvoreB(10);
 
             for (int i = 0; i < j; i++) {
+                int valueToAdd = v[i];
                 avlCount = 0;
-                adicionarValorAVL(arvoreAVL, v[i]);
+                adicionarValorAVL(arvoreAVL, valueToAdd);
                 media_avl += avlCount;
 
                 rnCount = 0;
-                adicionarValorRN(arvoreRN, v[i]);
+                adicionarValorRN(arvoreRN, valueToAdd);
                 media_rn += rnCount;
 
                 bCount = 0;
-                adicionaChaveB(arvoreBOrdem1, v[i]);
+                adicionaChaveB(arvoreBOrdem1, valueToAdd);
                 media_b1 += bCount;
 
                 bCount = 0;
-                adicionaChaveB(arvoreBOrdem5, v[i]);
+                adicionaChaveB(arvoreBOrdem5, valueToAdd);
                 media_b5 += bCount;
 
                 bCount = 0;
-                adicionaChaveB(arvoreBOrdem10, v[i]);
+                adicionaChaveB(arvoreBOrdem10, valueToAdd);
                 media_b10 += bCount;
             }
 
