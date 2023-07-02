@@ -193,12 +193,15 @@ NoAVL* adicionarValorAVL(ArvoreAVL* arvoreAVL, int valor) {
 }
 
 void removerNoAVL(ArvoreAVL* arvoreAVL, NoAVL* noAVL) {
+    avlCount++;
     if (noAVL->esquerda != NULL)
         removerNoAVL(arvoreAVL, noAVL->esquerda);
 
+    avlCount++;
     if (noAVL->direita != NULL)
         removerNoAVL(arvoreAVL, noAVL->direita);
 
+    avlCount++;
     if (noAVL->pai == NULL) {
         arvoreAVL->raiz = NULL;
     } else {
@@ -230,13 +233,17 @@ NoAVL* localizar(NoAVL* noAVL, int valor) {
 }
 
 void removerValorAVL(ArvoreAVL* arvoreAVL, int valor) {
+    avlCount++;
     NoAVL* noAVL = localizar(arvoreAVL->raiz, valor);
 
     while (noAVL != NULL) {
         if (noAVL->esquerda == NULL && noAVL->direita == NULL) {
+            avlCount++;
             if (noAVL->pai == NULL) {
+                avlCount++;
                 arvoreAVL->raiz = NULL;
             } else {
+                avlCount++;
                 if (noAVL->pai->esquerda == noAVL)
                     noAVL->pai->esquerda = NULL;
                 else

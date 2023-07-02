@@ -203,7 +203,6 @@ void removerChaveB(ArvoreB* arvore, int chave) {
 }
 
 void removerChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave) {
-    bCount++;
     if (noB == NULL)
         return;
 
