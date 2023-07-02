@@ -55,7 +55,7 @@ int fb(NoAVL *noAVL) {
 }
 
 NoAVL *rse(ArvoreAVL *arvoreAVL, NoAVL *noAVL) {
-    avlCount++;
+    avlCount++; // ok
     NoAVL *pai = noAVL->pai;
     NoAVL *direita = noAVL->direita;
 
@@ -83,7 +83,7 @@ NoAVL *rse(ArvoreAVL *arvoreAVL, NoAVL *noAVL) {
 }
 
 NoAVL *rsd(ArvoreAVL *arvoreAVL, NoAVL *noAVL) {
-    avlCount++;
+    avlCount++; // ok
     NoAVL *pai = noAVL->pai;
     NoAVL *esquerda = noAVL->esquerda;
 
@@ -153,7 +153,7 @@ NoAVL* criarNo(int valor) {
 }
 
 NoAVL* adicionarNo(NoAVL* noAVL, int valor) {
-    avlCount++;
+    avlCount++; // ok
     if (valor > noAVL->valor) {
         if (noAVL->direita == NULL) {
             NoAVL* novo = criarNo(valor);
@@ -178,7 +178,7 @@ NoAVL* adicionarNo(NoAVL* noAVL, int valor) {
 }
 
 NoAVL* adicionarValorAVL(ArvoreAVL* arvoreAVL, int valor) {
-    avlCount++;
+    avlCount++; //ok
     if (arvoreAVL->raiz == NULL) {
         NoAVL* novo = criarNo(valor);
         arvoreAVL->raiz = novo;
@@ -192,16 +192,12 @@ NoAVL* adicionarValorAVL(ArvoreAVL* arvoreAVL, int valor) {
     }
 }
 
-void removerNoAVL(ArvoreAVL* arvoreAVL, NoAVL* noAVL) {
-    avlCount++;
-    if (noAVL->esquerda != NULL)
-        removerNoAVL(arvoreAVL, noAVL->esquerda);
+void removerNoAVL(ArvoreAVL *arvoreAVL, NoAVL *noAVL) {
+    avlCount++; // ok
+    if (noAVL->esquerda != NULL) removerNoAVL(arvoreAVL, noAVL->esquerda);
 
-    avlCount++;
-    if (noAVL->direita != NULL)
-        removerNoAVL(arvoreAVL, noAVL->direita);
+    if (noAVL->direita != NULL) removerNoAVL(arvoreAVL, noAVL->direita);
 
-    avlCount++;
     if (noAVL->pai == NULL) {
         arvoreAVL->raiz = NULL;
     } else {
