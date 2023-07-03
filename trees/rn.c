@@ -93,9 +93,9 @@ NoRN* adicionarValorRN(ArvoreRN* arvoreRN, int valor) {
 }
 
 void removerValorRN(ArvoreRN* arvoreRN, int valor) {
-    rnCount++;
     NoRN* no = localizarRN(arvoreRN, valor);
 
+    rnCount++;
     if (no != NULL) {
         while (1) {
             rnCount++;

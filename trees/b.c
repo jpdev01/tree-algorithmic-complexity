@@ -73,7 +73,7 @@ int pesquisaBinariaB(NoB* noB, int chave) {
     int inicio = 0, fim = noB->total - 1, meio;
 
     while (inicio <= fim) {
-        bCount++;
+        bCount++; // ok
 
         meio = (inicio + fim) / 2;
 
@@ -111,7 +111,7 @@ NoB* localizaNoB(ArvoreB* arvore, int chave) {
     NoB* noB = arvore->raiz;
 
     while (noB != NULL) {
-        bCount++;
+        bCount++; //ok
 
         int i = pesquisaBinariaB(noB, chave);
 
