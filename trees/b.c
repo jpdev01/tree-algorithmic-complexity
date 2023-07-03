@@ -199,10 +199,12 @@ void adicionaChaveB(ArvoreB* arvore, int chave) {
 }
 
 void removerChaveB(ArvoreB* arvore, int chave) {
+    bCount++;
     removerChaveRecursivoB(arvore, arvore->raiz, chave);
 }
 
 void removerChaveRecursivoB(ArvoreB* arvore, NoB* noB, int chave) {
+    bCount++;
     if (noB == NULL)
         return;
 
