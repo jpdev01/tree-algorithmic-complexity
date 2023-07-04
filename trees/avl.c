@@ -120,19 +120,6 @@ NoAVL *rdd(ArvoreAVL *arvoreAVL, NoAVL *noAVL) {
     return rsd(arvoreAVL, noAVL);
 }
 
-
-public void metodoPrincipal() {
-
-    //...methods (that should not be executed)
-
-    metodoComCircuitBreaker()
-}
-
-@CircuitBreaker("")
-private Boolean metodoComCircuitBreaker() {
-    return false
-}
-
 void balanceamento(ArvoreAVL *a, NoAVL *noAVL) {
     while (noAVL != NULL) {
         avlCount++;
